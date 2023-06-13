@@ -8,9 +8,7 @@ function App() {
     // let [작명, 작명]
     let [title, setTitle] = useState(['남자 코트 추천', '강남 우동 맛집', '파이썬 독학'])
     let [like, changeLike] = useState(0)
-    function printConsole() {
-        console.log(1)
-    }
+    let [modal, setModal] = useState(false) //닫힌상태
     return (
         <div className='App'>
             <div className='black-nav'>
@@ -67,15 +65,51 @@ function App() {
                 <p>2월 17일 발행</p>
             </div>
             <div className='list'>
-                <h4>{title[2]}</h4>
+                <h4
+                    onClick={() => {
+                        if (modal == false) {
+                            setModal(true)
+                        }
+                        if (modal == true) {
+                            setModal(false)
+                        }
+                        // 아니면,
+                        // setModal(!modal)
+                        // 위는 값을 반대로 바꿔준다
+                    }}
+
+                    /*
+                        동적 UI 만드는 스텝 ✅
+                        1. html, css 디자인 완성
+                        2. UI 현재상태를 state로 저장
+                        3. state에 따라 UI가 어떻게 보일지 작성
+                    */
+                >
+                    {title[2]}
+                </h4>
                 <p>2월 17일 발행</p>
             </div>
+            {
+                //html 중간에 조건문 쓰려면 , 삼항연산자(ternary operator)
+                modal == true ? <Modal /> : null
+            }
         </div>
     )
 }
 
 export default App
 
+// const Modal = () => {}
+
+function Modal() {
+    return (
+        <div className='modal'>
+            <h4>제목</h4>
+            <p>날짜</p>
+            <p>상세내용</p>
+        </div>
+    )
+}
 /*
 (참고) Destructuring 문법
 let num = [1, 2]
@@ -83,3 +117,6 @@ let [a, c] = [1, 2]
 num[0]   // 1
 num[1]   // 2
 */
+
+//컴포넌트의 단점: state를 가져다 쓸 때 문제생김
+//A함수에 있던 변수는 B함수에서 맘대로 가져다 쓸 수 없음
