@@ -29,6 +29,20 @@ function App() {
                 }}
             >
                 여자코트추천
+            </button>{' '}
+            <button
+                onClick={() => {
+                    let copy = [...title]
+                    // copy.sort((a, b) => {
+                    //     if (a < b) return -1
+                    //     if (a > b) return 1
+                    //     if (a == b) return 0
+                    // })
+                    copy.sort() // 숫자,영문,한글 모두 오름차순(by defualt)/작은값부터 큰값으로 나열
+                    setTitle(copy)
+                }}
+            >
+                가나다 정렬
             </button>
             <div className='list'>
                 <h4>
