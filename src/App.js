@@ -7,8 +7,17 @@ function App() {
     // useState(보관할 자료)
     // let [작명, 작명]
     let [title, setTitle] = useState(['남자 코트 추천', '강남 우동 맛집', '파이썬 독학'])
-    let [like, changeLike] = useState(0)
+    let [like, changeLike] = useState([0, 0, 0]) //좋아요버튼
     let [modal, setModal] = useState(false) //닫힌상태
+    /*
+    [1, 2, 3].map((a) => {
+            return '123123123'
+        })
+        // ["123123123", "123123123", "123123123"]
+        // array 자료 갯수만큼 함수안의 코드 실행
+        // 함수 파라미터는 array안에 있던 자료이다.
+        // return 에 뭐 적으면 array 로 담아줌
+    */
     return (
         <div className='App'>
             <div className='black-nav'>
@@ -31,64 +40,43 @@ function App() {
             <button
                 onClick={() => {
                     let copy = [...title]
-                    // copy.sort((a, b) => {
-                    //     if (a < b) return -1
-                    //     if (a > b) return 1
-                    //     if (a == b) return 0
-                    // })
-                    copy.sort() // 숫자,영문,한글 모두 오름차순(by defualt)/작은값부터 큰값으로 나열
+                    copy.sort() // 오름차순(by defualt), 작은값 >> 큰값으로 나열
                     setTitle(copy)
                 }}
             >
                 가나다 정렬
             </button>
-            <div className='list'>
-                <h4>
-                    {title[0]}
-                    <span
-                        onClick={() => {
-                            // onClick={} 안에는 꼭 변경함수로 state변경할 것 ✅
-                            // state 변경하는 법(등호로 변경금지)
-                            // state변경함수(새로운state)
-                            changeLike(like + 1)
-                        }}
-                    >
-                        {' '}
-                        👍{' '}
-                    </span>
-                    <strong>{like}</strong>
-                </h4>
-                <p>2월 17일 발행</p>
-            </div>
-            <div className='list'>
-                <h4>{title[1]}</h4>
-                <p>2월 17일 발행</p>
-            </div>
-            <div className='list'>
-                <h4
-                    onClick={() => {
-                        if (modal == false) {
-                            setModal(true)
-                        }
-                        if (modal == true) {
-                            setModal(false)
-                        }
-                        // 아니면,
-                        // setModal(!modal)
-                        // 위는 값을 반대로 바꿔준다
-                    }}
-
-                    /*
-                        동적 UI 만드는 스텝 ✅
-                        1. html, css 디자인 완성
-                        2. UI 현재상태를 state로 저장
-                        3. state에 따라 UI가 어떻게 보일지 작성
-                    */
-                >
-                    {title[2]}
-                </h4>
-                <p>2월 17일 발행</p>
-            </div>
+            {title.map((list, i) => {
+                return (
+                    <div className='list' key={i}>
+                        <h4
+                        // onClick={() => {
+                        //     if (modal == false) {
+                        //         setModal(true)
+                        //     }
+                        //     if (modal == true) {
+                        //         setModal(false)
+                        //     }
+                        // }}
+                        >
+                            {title[i]}
+                            <span
+                                className='btn_likes'
+                                onClick={() => {
+                                    let copy = [...like]
+                                    copy[i] = copy[i] + 1
+                                    changeLike(copy)
+                                }}
+                            >
+                                {' '}
+                                👍{' '}
+                            </span>
+                            <strong>{like[i]}</strong>
+                        </h4>
+                        <p>2월 17일 발행</p>
+                    </div>
+                )
+            })}
             {
                 //html 중간에 조건문 쓰려면 , 삼항연산자(ternary operator)
                 modal == true ? <Modal /> : null
@@ -99,8 +87,6 @@ function App() {
 
 export default App
 
-// const Modal = () => {}
-
 function Modal() {
     return (
         <div className='modal'>
@@ -110,13 +96,3 @@ function Modal() {
         </div>
     )
 }
-/*
-(참고) Destructuring 문법
-let num = [1, 2]
-let [a, c] = [1, 2]
-num[0]   // 1
-num[1]   // 2
-*/
-
-//컴포넌트의 단점: state를 가져다 쓸 때 문제생김
-//A함수에 있던 변수는 B함수에서 맘대로 가져다 쓸 수 없음
