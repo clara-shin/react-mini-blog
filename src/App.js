@@ -48,9 +48,56 @@ function App() {
             >
                 가나다 정렬
             </button>
+            <div style={{ marginTop: '10px' }}>
+                <input
+                    onChange={(e) => {
+                        // input에 입력한 값 가져오는 법
+                        // 파라미터 e를 가져온다
+                        // e: 현재 발생하는 이벤트에 관련한 여러 기능들이 담겨있는 일종의 변수
+                        // e.target : 이벤트 발생한 html태그
+                        // e.target.value : 이벤트 발생한 html 태그에 입력한 값
+                        changeInput(e.target.value) // <- state변경함수는 늦게처리됨(비동기처리), 그래서 이거 완료되기 전에
+                        console.log(inputValue) // <- 다음줄 실행해준다.(왜냐? 리액트 만든 사람이 이렇게 정함)
+                    }}
+                    type='text'
+                />
+                <button
+                    onClick={(e) => {
+                        //input에 입력된 state를 title array에 끼운다.
+                        //배열 맨 앞에 요소추가 : unshift(elem)
+                        inputValue = inputValue.split(' ').join('') //문자열의 모든 공백 제거
+                        if (inputValue !== '') {
+                            let copy = [...title]
+                            copy.unshift(inputValue)
+                            //setTitle함수를 통해 title state array를 update 해준다.
+                            setTitle(copy)
+                        }
+                    }}
+                >
+                    저장
+                </button>
+            </div>
+            {/* 
+            onClick: 클릭했을 때, 코드실행
+            onChange: 사용자가 타이핑을 할때마다, 코드실행
+            onInput: 사용자가 입력란에서 포커스를 잃었을 때, 코드실행 
+            onMouseOver: 사용자가 입력란에 마우스오버 했을 때, 코드실행
+            onScroll: 사용자가 마우스 스크롤을 할때마다, 코드실행
+            */}
             {title.map((list, i) => {
                 return (
                     <div className='list' key={i}>
+                        <button
+                            className='btn-del'
+                            onClick={(e) => {
+                                let copy = [...title]
+                                copy.splice(i, 1)
+                                console.log(copy)
+                                setTitle(copy)
+                            }}
+                        >
+                            삭제
+                        </button>
                         <h4
                             onClick={() => {
                                 setModal(true)
@@ -78,45 +125,6 @@ function App() {
                     </div>
                 )
             })}
-            <input
-                onChange={(e) => {
-                    // input에 입력한 값 가져오는 법
-                    // 파라미터 e를 가져온다
-                    // e: 현재 발생하는 이벤트에 관련한 여러 기능들이 담겨있는 일종의 변수
-                    // e.target : 이벤트 발생한 html태그
-                    // e.target.value : 이벤트 발생한 html 태그에 입력한 값
-                    changeInput(e.target.value) // <- state변경함수는 늦게처리됨(비동기처리), 그래서 이거 완료되기 전에
-                    console.log(inputValue) // <- 다음줄 실행해준다.(왜냐? 리액트 만든 사람이 이렇게 정함)
-                }}
-                type='text'
-            />
-            <button
-                onKeyDown={(e) => {
-                    if (e.code == 'Enter') {
-                        console.log(e.code)
-                    }
-                }}
-                onClick={(e) => {
-                    //input에 입력된 state를 title array에 끼운다.
-                    //배열 맨 앞에 요소추가 : unshift(elem)
-                    inputValue = inputValue.split(' ').join('') //문자열의 모든 공백 제거
-                    if (inputValue !== '') {
-                        let copy = [...title]
-                        copy.unshift(inputValue)
-                        //setTitle함수를 통해 title state array를 update 해준다.
-                        setTitle(copy)
-                    }
-                }}
-            >
-                저장
-            </button>
-            {/* 
-            onClick: 클릭했을 때, 코드실행
-            onChange: 사용자가 타이핑을 할때마다, 코드실행
-            onInput: 사용자가 입력란에서 포커스를 잃었을 때, 코드실행 
-            onMouseOver: 사용자가 입력란에 마우스오버 했을 때, 코드실행
-            onScroll: 사용자가 마우스 스크롤을 할때마다, 코드실행
-            */}
             {
                 //html 중간에 조건문 쓰려면 , 삼항연산자(ternary operator)
                 modal == true ? (
