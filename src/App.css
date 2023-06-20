@@ -22,7 +22,13 @@
     text-align: left;
     padding-left: 30px;
 }
+.btn-del {
+    position: absolute;
+    top: 2rem;
+    right: 1.5rem;
+}
 .list {
+    position: relative;
     padding: 20px;
     margin: 8px 10px;
     border-radius: 2%;
